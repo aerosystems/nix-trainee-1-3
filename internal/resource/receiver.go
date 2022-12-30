@@ -29,7 +29,7 @@ func GetPosts(userId int) ([]Post, error) {
 	}
 
 	var result []Post
-	if err := json.Unmarshal(body, &result); err != nil { // Parse []byte to go struct pointer
+	if err := json.Unmarshal(body, &result); err != nil {
 		return nil, err
 	}
 
@@ -58,7 +58,7 @@ func GetComments(postId int) ([]Comment, error) {
 	}
 
 	var result []Comment
-	if err := json.Unmarshal(body, &result); err != nil { // Parse []byte to go struct pointer
+	if err := json.Unmarshal(body, &result); err != nil {
 		return nil, err
 	}
 

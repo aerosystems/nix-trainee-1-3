@@ -5,9 +5,13 @@ import (
 	"sync"
 
 	"github.com/aerosystems/nix-beginner-6/internal/resource"
+	"github.com/aerosystems/nix-beginner-6/pkg/client/mysql"
 )
 
 func main() {
+	client := mysql.NewClient()
+	repository := resource.NewRepository(client)
+
 	userId := 7
 	posts, err := resource.GetPosts(userId)
 	if err != nil {
@@ -40,7 +44,7 @@ func main() {
 
 	go func() {
 		for {
-			resource.WriteComment(<-chanComment)
+			repository.Create(<-chanComment)
 		}
 	}()
 }
