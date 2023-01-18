@@ -2,25 +2,37 @@ package resource
 
 import (
 	"database/sql"
+	"log"
+
+	"gorm.io/gorm"
 )
 
 type Repository struct {
-	db *sql.DB
+	sql  *sql.DB
+	gorm *gorm.DB
 }
 
-func (r *Repository) Create(comment Comment) {
+func (r *Repository) CreateWithMySLQ(comment Comment) {
 	q := "INSERT IGNORE INTO `comments` (id, post_id, name, email, body) VALUES (?, ?, ?, ?, ?);"
-	insert, err := r.db.Prepare(q)
+	insert, err := r.sql.Prepare(q)
 	if err != nil {
-		panic(err)
+		log.Println(err)
 	}
 
 	insert.Exec(comment.Id, comment.PostId, comment.Name, comment.Email, comment.Body)
 	insert.Close()
 }
 
-func NewRepository(db *sql.DB) *Repository {
+func (r *Repository) CreateWithGORM(comment Comment) {
+	result := r.gorm.Create(&comment)
+	if result.Error != nil {
+		log.Println(result.Error)
+	}
+}
+
+func NewRepository(sql *sql.DB, gorm *gorm.DB) *Repository {
 	return &Repository{
-		db: db,
+		sql:  sql,
+		gorm: gorm,
 	}
 }

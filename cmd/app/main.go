@@ -4,13 +4,15 @@ import (
 	"log"
 	"sync"
 
-	"github.com/aerosystems/nix-beginner-6/internal/resource"
-	"github.com/aerosystems/nix-beginner-6/pkg/client/mysql"
+	"github.com/aerosystems/nix-trainee-1-3/internal/resource"
+	"github.com/aerosystems/nix-trainee-1-3/pkg/client/gorm"
+	"github.com/aerosystems/nix-trainee-1-3/pkg/client/mysql"
 )
 
 func main() {
-	client := mysql.NewClient()
-	repository := resource.NewRepository(client)
+	clientMySQL := mysql.NewClient()
+	clientGORM := gorm.NewClient()
+	repository := resource.NewRepository(clientMySQL, clientGORM)
 
 	userId := 7
 	posts, err := resource.GetPosts(userId)
@@ -44,7 +46,7 @@ func main() {
 
 	go func() {
 		for {
-			repository.Create(<-chanComment)
+			repository.CreateWithGORM(<-chanComment)
 		}
 	}()
 }

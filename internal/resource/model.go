@@ -8,9 +8,9 @@ type Post struct {
 }
 
 type Comment struct {
-	Id     int    `json:"id"`
-	PostId int    `json:"postId"`
-	Name   string `json:"name"`
-	Email  string `json:"email"`
-	Body   string `json:"body"`
+	Id     int    `json:"id" gorm:"<-"`
+	PostId int    `json:"postId" gorm:"<-"`
+	Name   string `json:"name" gorm:"<-"`
+	Email  string `json:"email" gorm:"<-"`
+	Body   string `json:"body" gorm:"<-"`
 }
